@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader1" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition;
+
+void main() 
+{
+    gl_Position = vPosition;
+} 
+</script>
+
+<script id="vertex-shader2" type="x-shader/x-vertex">
+
+attribute vec4 vPosition;
+attribute vec2 vTexCoord;
+
+varying vec2 fTexCoord;
+
+void main()
+{
+
+gl_Position = vPosition;
+fTexCoord = vTexCoord;
+
+}
+</script>
+
+<script id="fragment-shader1" type="x-shader/x-fragment">
+
+precision mediump float;
+
+void
+main()
+{
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+
+}
+</script>
+<script id="fragment-shader2" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying  vec2 fTexCoord;
+
+uniform sampler2D texture;
+
+void main() 
+{ 
+    float s = 4.0;
+    float d = 1.0/1024.0;
+    float x = fTexCoord.x;
+    float y = fTexCoord.y;
+    gl_FragColor = (texture2D( texture, vec2(x+d, y))
+                   +texture2D( texture, vec2(x, y+d))
+                   +texture2D( texture, vec2(x-d, y))
+                   +texture2D( texture, vec2(x, y-d)))/s;
+                 
+} 
+
+</script>
+
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="render3.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="1024" height="1024">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

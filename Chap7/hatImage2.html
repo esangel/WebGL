@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute vec2 vPosition;
+
+void
+main()
+{    
+    gl_Position =  vec4(vPosition.x, vPosition.y, 0.0, 1.0);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+
+void
+main()
+{
+    float sinc;
+    float x = 2.0*gl_FragCoord.x/511.0-1.0;
+    float y = 2.0*gl_FragCoord.y/511.0-1.0;
+    float r = 2.0*3.14*sqrt(x*x + y*y)/2.0;
+    if(r>0.001) sinc = sin(r)/r;
+    else sinc = 1.0;
+    
+    vec4 color = vec4(sinc, sinc, sinc, 1.0);
+    if(color.g<0.5) color.g = 2.0*color.g;
+      else color.g = 2.0 - 2.0*color.g;
+    color.b = 1.0-color.b;
+    gl_FragColor = color;
+    
+}
+</script>
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="hatImage2.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+/* bump map vertex shader */
+
+varying vec3 L; /* light vector in texture-space coordinates */
+varying vec3 V; /* view vector in texture-space coordinates */
+
+attribute vec2 vTexCoord;
+attribute vec4 vPosition;
+
+uniform vec4 normal;
+uniform vec4 lightPosition;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat3 normalMatrix;
+uniform vec3 objTangent; /* tangent vector in object coordinates */
+
+varying vec2 fTexCoord;
+
+void main()
+{
+    gl_Position = projectionMatrix*modelViewMatrix*vPosition;
+
+    fTexCoord = vTexCoord;
+
+    vec3 eyePosition = (modelViewMatrix*vPosition).xyz;
+    vec3 eyeLightPos = (modelViewMatrix*lightPosition).xyz;
+
+   /* normal, tangent and binormal in eye coordinates */
+
+    vec3 N = normalize(normalMatrix*normal.xyz);
+    vec3 T  = normalize(normalMatrix*objTangent);
+    vec3 B = cross(N, T);
+
+    /* light vector in texture space */
+
+    L.x = dot(T, eyeLightPos-eyePosition);
+    L.y = dot(B, eyeLightPos-eyePosition);
+    L.z = dot(N, eyeLightPos-eyePosition);
+
+    L = normalize(L);
+
+    /* view vector in texture space */
+
+    V.x = dot(T, -eyePosition);
+    V.y = dot(B, -eyePosition);
+    V.z = dot(N, -eyePosition);
+
+    V = normalize(V);
+    
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying vec3 L;
+varying vec3 V;
+varying vec2 fTexCoord;
+
+uniform sampler2D texMap;
+uniform vec4 diffuseProduct;
+
+void main()
+{
+   vec4 N = texture2D(texMap, fTexCoord);
+   vec3 NN =  normalize(2.0*N.xyz-1.0);
+   vec3 LL = normalize(L);
+   float Kd = max(dot(NN, LL), 0.0);
+   gl_FragColor = vec4(Kd*diffuseProduct.xyz, 1.0);
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="bumpMap.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

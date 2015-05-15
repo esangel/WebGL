@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader1" type="x-shader/x-vertex">
+
+attribute vec4 vPosition1;
+attribute vec2 vTexCoord;
+
+varying vec2 fTexCoord;
+
+void main()
+{
+    gl_Position = vPosition1;
+    fTexCoord = vTexCoord;
+
+}
+</script>
+
+<script id="vertex-shader2" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition2;
+uniform float pointSize;
+
+void main() 
+{
+    gl_PointSize = pointSize;
+    gl_Position = vPosition2;
+} 
+</script>
+
+<script id="fragment-shader1" type="x-shader/x-fragment">
+
+
+precision mediump float;
+
+uniform sampler2D texture;
+uniform float d;
+uniform float s;
+
+varying vec2 fTexCoord;
+
+void main() 
+{ 
+    float x = fTexCoord.x;
+    float y = fTexCoord.y;
+    gl_FragColor = (texture2D( texture, vec2(x+d, y))
+                   +texture2D( texture, vec2(x, y+d))
+                   +texture2D( texture, vec2(x-d, y))
+                   +texture2D( texture, vec2(x, y-d)))/s;
+                 
+} 
+</script>
+<script id="fragment-shader2" type="x-shader/x-fragment">
+
+precision mediump float;
+
+uniform vec4 color;
+void
+main()
+{
+    gl_FragColor = color;
+
+}
+</script>
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="particleDiffusion2.js"></script>
+
+
+<body>
+<canvas id="gl-canvas" width="1024" height="1024">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+varying vec3 R;
+attribute vec4 vPosition;
+attribute vec4 vNormal;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat3 normalMatrix;
+
+void main()
+{
+    gl_Position = projectionMatrix*modelViewMatrix*vPosition;
+     
+    //vec3 eyePos  = normalize((modelViewMatrix*vPosition).xyz);
+    vec3 eyePos  = (modelViewMatrix*vPosition).xyz;
+
+    vec3 N = normalize(normalMatrix*vNormal.xyz);
+    //vec3 N = normalMatrix*vNormal.xyz;
+    
+    R = reflect(eyePos, N);
+   
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying vec3 R;
+uniform samplerCube texMap;
+
+void main()
+{
+    vec4 texColor = textureCube(texMap, R);
+
+    gl_FragColor = texColor;
+}
+</script>
+
+<p> </p>
+<button id = "Button2">Increase theta</button>
+<button id = "Button3">Decrease theta</button>
+<button id = "Button4">Increase phi</button>
+<button id = "Button5">Decrease phi</button>
+<p> </p>
+
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="reflectingCube.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

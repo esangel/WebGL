@@ -1,0 +1,95 @@
+<html>
+<div>
+ Center X -2  <input id="Center X" type="range"
+ min="-2" max="2" step="0.1" value="-2" />
+1
+</div>
+<div>
+Center Y -1<input id="Center Y" type="range"
+ min="-1" max="1" step="0.1" value="-1" />
+1
+</div>
+<div>
+Size 1<input id="Size" type="range"
+ min="0.01" max="8" step="0.1" value="8" />
+8
+</div>
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition;
+
+
+void main() 
+{
+    gl_Position = vPosition;
+} 
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+uniform float cx;
+uniform float cy; 
+
+uniform float scale;
+
+float height;
+float width;
+
+void main() 
+{ 
+   //float height = 0.5;          /* size of window in complex plane */
+   //float width = 0.5;
+   
+   const int max = 100;             /* number of interations per point */
+   const float PI = 3.14159;
+   
+   float n = 1000.0; 
+   float m = 1000.0; 
+   float v;
+
+   
+   float x = gl_FragCoord.x  /(n*scale) + cx - 1.0 / (2.0*scale);
+   float y = gl_FragCoord.y/(m*scale) + cy - 1.0 / (2.0*scale);
+   
+   float ax=0.0, ay=0.0;
+   float bx, by;
+
+
+   for ( int k = 0; k < max; k++ ) {
+            
+		// compute c = c^2 + p
+        
+            bx  = ax*ax-ay*ay;
+            by = 2.0*ax*ay;
+            ax = bx+x;
+            ay = by+y;
+            v = ax*ax+ay*ay;
+            
+            if ( v > 4.0 ) break;      /* assume not in set if mag > 2 */
+        }
+        
+        // assign gray level to point based on its magnitude */
+
+        //if ( v > 1.0 ) v = 1.0;        /* clamp if > 1 */
+        v = min(v, 1.0);
+        gl_FragColor.r = v;
+        gl_FragColor.g = 0.5* sin( 3.0*PI*v) + 1.0;
+        gl_FragColor.b = 1.0-v;
+        gl_FragColor.b = 0.5* cos( 19.0*PI*v) + 1.0;
+        gl_FragColor.a = 1.0;
+} 
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="mandelbrot2.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="1000" height="1000"
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

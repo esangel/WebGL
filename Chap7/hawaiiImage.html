@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute vec2 vPosition;
+attribute  vec2 vTexCoord;
+varying vec2 fTexCoord;
+
+void
+main()
+{    
+    fTexCoord = vTexCoord;
+    gl_Position =  vec4(vPosition.x, vPosition.y, 0.0, 1.0);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying vec2 fTexCoord;
+uniform sampler2D texture;
+
+void
+main()
+{
+    float d = 1.0/256.0;
+    float x = fTexCoord.x;
+    float y = fTexCoord.y;
+    
+    gl_FragColor = 10.0*abs(
+        texture2D( texture, vec2(x+d, y))
+       -texture2D( texture, vec2(x-d, y)))
+       +10.0*abs(texture2D( texture, vec2(x, y+d))
+       -texture2D( texture, vec2(x, y-d)));
+
+    gl_FragColor.w = 1.0;
+}
+</script>
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="honolulu4.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="hawaiiImage.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

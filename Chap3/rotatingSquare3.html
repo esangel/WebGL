@@ -13,8 +13,8 @@ main()
     float s = sin( theta );
     float c = cos( theta );
 
-    gl_Position.x = -s * vPosition.x + c * vPosition.y;
-    gl_Position.y =  s * vPosition.y + c * vPosition.x;
+    gl_Position.x = -s * vPosition.y + c * vPosition.x;
+    gl_Position.y =  s * vPosition.x + c * vPosition.y;
     gl_Position.z = 0.0;
     gl_Position.w = 1.0;
 }
@@ -36,7 +36,7 @@ main()
 <script type="text/javascript" src="../Common/initShaders.js"></script>
 <script type="text/javascript" src="../Common/MV.js"></script>
 <script type="text/javascript" src="rotatingSquare3.js"></script>
-</head>   
+</head>
 
 <body>
 <div>

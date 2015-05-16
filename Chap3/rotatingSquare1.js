@@ -8,7 +8,7 @@ var thetaLoc;
 window.onload = function init()
 {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -21,14 +21,15 @@ window.onload = function init()
     //  Load shaders and initialize attribute buffers
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     var vertices = [
         vec2(  0,  1 ),
-        vec2(  1,  0 ),
-        vec2( -1,  0 ),
+        vec2(  -1,  0 ),
+        vec2( 1,  0 ),
         vec2(  0, -1 )
     ];
-    
+
+
     // Load the data into the GPU
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
@@ -38,7 +39,7 @@ window.onload = function init()
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
-    
+
     thetaLoc = gl.getUniformLocation( program, "theta" );
 
     render();
@@ -46,7 +47,7 @@ window.onload = function init()
 
 
 function render() {
-    
+
     gl.clear( gl.COLOR_BUFFER_BIT );
 
     theta += 0.1;

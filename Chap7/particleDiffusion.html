@@ -3,14 +3,14 @@
 
 <script id="vertex-shader1" type="x-shader/x-vertex">
 
-attribute vec4 vPosition1;
+attribute vec2 vPosition1;
 attribute vec2 vTexCoord;
 
 varying vec2 fTexCoord;
 
 void main()
 {
-    gl_Position = vPosition1;
+    gl_Position = vec4(vPosition1, 0.0, 1.0);
     fTexCoord = vTexCoord;
 
 }
@@ -18,13 +18,13 @@ void main()
 
 <script id="vertex-shader2" type="x-shader/x-vertex">
 
-attribute  vec4 vPosition2;
+attribute  vec2 vPosition2;
 uniform float pointSize;
 
 void main() 
 {
     gl_PointSize = pointSize;
-    gl_Position = vPosition2;
+    gl_Position = vec4(vPosition2, 0.0, 1.0);
 } 
 </script>
 

@@ -27,14 +27,13 @@ var vertices = [
     vec2(1.0, 1.0)
 ];
 
-
 var program1, program2;
 var framebuffer;
 var texture1, texture2;
 
 var buffer;
-//var quadLoc1, quadLoc3;
 var vPosition1, vPosition2;
+var vTexCoord;
 var texLoc;
 
 window.onload = function init() {
@@ -83,37 +82,46 @@ window.onload = function init() {
     var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
     if(status != gl.FRAMEBUFFER_COMPLETE) alert('Framebuffer Not Complete');
 
-    for(var i = 0; i<numPoints; i++)
+    for(var i = 0; i<numPoints; i++) 
          vertices[4+i] = vec2(2.0*Math.random()-1.0, 2.0*Math.random()-1.0);
-
 
 
     buffer = gl.createBuffer();
 
     gl.useProgram(program2);
+
     gl.uniform1f( gl.getUniformLocation(program2, "pointSize"), pointSize );
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.0, 0.0, 0.9, 1.0);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
+    gl.useProgram(program1);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, 64+8*numPoints, gl.STATIC_DRAW);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(vertices));
     gl.bufferSubData(gl.ARRAY_BUFFER, 32+8*numPoints, flatten(texCoord));
 
     // buffers and vertex arrays
 
-    gl.useProgram(program1);
 
     vPosition1 = gl.getAttribLocation( program1, "vPosition1" );
     gl.enableVertexAttribArray( vPosition1 );
     gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0,0 );
 
-    var vTexCoord = gl.getAttribLocation( program1, "vTexCoord");
+    vTexCoord = gl.getAttribLocation( program1, "vTexCoord");
     gl.enableVertexAttribArray( vTexCoord );
-    gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0,0 );
+    gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 32+8*numPoints );
 
     gl.uniform1i( gl.getUniformLocation(program1, "texture"), 0 );
     gl.uniform1f( gl.getUniformLocation(program1, "d"), 1/texSize );
     gl.uniform1f( gl.getUniformLocation(program1, "s"), diffuse );
+
+    gl.useProgram(program2);
+    
+    vPosition2 = gl.getAttribLocation( program2, "vPosition2" );
+    gl.enableVertexAttribArray( vPosition2 );
+    gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0,0 );
+
+    gl.useProgram(program1);
 
     gl.bindTexture(gl.TEXTURE_2D, texture2);
 
@@ -139,12 +147,14 @@ var render = function(){
 
     }
 
-    //var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-    //if(status != gl.FRAMEBUFFER_COMPLETE) alert('Framebuffer Not Complete');
+    var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if(status != gl.FRAMEBUFFER_COMPLETE) alert('Framebuffer Not Complete');
 
+    gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
 
     gl.useProgram(program2);
+    gl.enableVertexAttribArray( vPosition2 );
     gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0, 0);
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.9, 0.0, 0.9, 1.0);
     gl.drawArrays(gl.POINTS, 4, numPoints/2);
@@ -152,10 +162,15 @@ var render = function(){
     gl.drawArrays(gl.POINTS, 4+numPoints/2, numPoints/2);
 
     gl.useProgram(program1);
+    gl.enableVertexAttribArray( vTexCoord );
+    gl.enableVertexAttribArray( vPosition1 );
     gl.vertexAttribPointer( texLoc, 2, gl.FLOAT, false, 0, 32+8*numPoints);
+    gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0, 0);
 
 
 // render to display
+
+    gl.useProgram(program1);
 
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -178,6 +193,7 @@ var render = function(){
 // move particles in a random direction
 // wrap arounds
 
+
     for(var i=0; i<numPoints; i++) {
         vertices[4+i][0] += 0.01*(2.0*Math.random()-1.0);
         vertices[4+i][1] += 0.01*(2.0*Math.random()-1.0);
@@ -187,7 +203,7 @@ var render = function(){
         if(vertices[4+i][1]<-1.0) vertices[4+i][1]+= 2.0;
 
     }
-
+console.log(vertices.length);
     gl.bufferSubData(gl.ARRAY_BUFFER,  0, flatten(vertices));
 
 // swap textures
@@ -197,8 +213,8 @@ var render = function(){
     t2 = new Date()
     var fps = Math.floor(1000/(t2.valueOf()-t1.valueOf())+0.5);
     t1 = t2;
-    console.log(fps);
+//    console.log(fps);
 
 
-    requestAnimFrame(render);
+     requestAnimFrame(render);
 }

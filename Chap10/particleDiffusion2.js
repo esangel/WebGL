@@ -33,6 +33,7 @@ var buffer;
 
 var vPosition1, vPosition2;
 var texLoc;
+var vTexCoord;
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
@@ -88,27 +89,36 @@ window.onload = function init() {
     gl.useProgram(program2);
     gl.uniform1f( gl.getUniformLocation(program2, "pointSize"), pointSize );
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.0, 0.0, 0.9, 1.0);    
+
+    gl.useProgram(program1);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        
     gl.bufferData(gl.ARRAY_BUFFER, 64+8*numPoints, gl.STATIC_DRAW);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(vertices));
     gl.bufferSubData(gl.ARRAY_BUFFER, 32+8*numPoints, flatten(texCoord));
     
     // buffers and vertex arrays
     
-    gl.useProgram(program1);
     
     vPosition1 = gl.getAttribLocation( program1, "vPosition1" );
     gl.enableVertexAttribArray( vPosition1 );
     gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0,0 );
     
-    var vTexCoord = gl.getAttribLocation( program1, "vTexCoord");
+    vTexCoord = gl.getAttribLocation( program1, "vTexCoord");
     gl.enableVertexAttribArray( vTexCoord );    
-    gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0,0 );
+    gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 32+8*numPoints );
        
     gl.uniform1i( gl.getUniformLocation(program1, "texture"), 0 );
     gl.uniform1f( gl.getUniformLocation(program1, "d"), 1/texSize );
     gl.uniform1f( gl.getUniformLocation(program1, "s"), diffuse );
+
+    gl.useProgram(program2);
+
+	vPosition2 = gl.getAttribLocation(program2, "vPosition2");
+	gl.enableVertexAttribArray(vPosition2);
+	gl.vertexAttribPointer(vPosition2, 2, gl.FLOAT, false, 0, 0);
+
+	gl.useProgram(program1);
 
     gl.bindTexture(gl.TEXTURE_2D, texture2);
     
@@ -140,6 +150,7 @@ var render = function(){
     gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
     
     gl.useProgram(program2);
+	gl.enableVertexAttribArray(vPosition2);
     gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0, 0);
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.9, 0.0, 0.9, 1.0); 
     gl.drawArrays(gl.POINTS, 4, numPoints/2);
@@ -147,7 +158,10 @@ var render = function(){
     gl.drawArrays(gl.POINTS, 4+numPoints/2, numPoints/2);
     
     gl.useProgram(program1);
+	gl.enableVertexAttribArray(vTexCoord);
+	gl.enableVertexAttribArray(vPosition1);
     gl.vertexAttribPointer( texLoc, 2, gl.FLOAT, false, 0, 32+8*numPoints);
+    gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0, 0);
     
 
 // render to display
@@ -168,7 +182,7 @@ var render = function(){
     gl.viewport(0, 0, texSize, texSize);
 
     
-    gl.useProgram(program2);
+    gl.useProgram(program1);
     
 // move particles in a random direction
 // wrap arounds

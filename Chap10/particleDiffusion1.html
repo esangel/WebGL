@@ -21,11 +21,11 @@ void main()
 attribute  vec4 vPosition2;
 uniform float pointSize;
 
-void main() 
+void main()
 {
     gl_PointSize = pointSize;
     gl_Position = vPosition2;
-} 
+}
 </script>
 
 <script id="fragment-shader1" type="x-shader/x-fragment">
@@ -39,16 +39,16 @@ uniform float s;
 
 varying vec2 fTexCoord;
 
-void main() 
-{ 
+void main()
+{
     float x = fTexCoord.x;
     float y = fTexCoord.y;
     gl_FragColor = (texture2D( texture, vec2(x+d, y))
                    +texture2D( texture, vec2(x, y+d))
                    +texture2D( texture, vec2(x-d, y))
                    +texture2D( texture, vec2(x, y-d)))/s;
-                 
-} 
+
+}
 </script>
 <script id="fragment-shader2" type="x-shader/x-fragment">
 

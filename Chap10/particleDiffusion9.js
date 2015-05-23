@@ -200,15 +200,11 @@ var render = function(){
 // wrap arounds
 
     gl.useProgram(program2);
-    gl.enableVertexAttribArray( vPosition2 );
     gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0, 0);
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.0, 0.0, 0.0, 1.0);
     gl.drawArrays(gl.POINTS, 4, numPoints);
 
     gl.useProgram(program1);
-    gl.enableVertexAttribArray( vPosition1 );
-    gl.enableVertexAttribArray( vTexCoord );
-    gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0, 0);
     gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 32+8*numPoints);
 
     for(var i=0; i<released; i++) {

@@ -1,3 +1,4 @@
+"use strict";
 
 var canvas;
 var gl;
@@ -53,13 +54,13 @@ var indices = [
 window.onload = function init()
 {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    
+
     gl.enable(gl.DEPTH_TEST);;
 
     //
@@ -67,15 +68,15 @@ window.onload = function init()
     //
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     // array element buffer
-    
+
     var iBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
-    
+
     // color array atrribute buffer
-    
+
     var cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(vertexColors), gl.STATIC_DRAW );
@@ -85,7 +86,7 @@ window.onload = function init()
     gl.enableVertexAttribArray( vColor );
 
     // vertex array attribute buffer
-    
+
     var vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW );
@@ -94,10 +95,10 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
-    thetaLoc = gl.getUniformLocation(program, "theta"); 
-    
+    thetaLoc = gl.getUniformLocation(program, "theta");
+
     //event listeners for buttons
-    
+
     document.getElementById( "xButton" ).onclick = function () {
         axis = xAxis;
     };
@@ -108,7 +109,7 @@ window.onload = function init()
         axis = zAxis;
     };
 
-    
+
     render();
 }
 
@@ -124,4 +125,3 @@ function render()
 
     requestAnimFrame( render );
 }
-

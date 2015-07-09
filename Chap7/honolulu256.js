@@ -1,3 +1,6 @@
+
+"use strict";
+
 var nRows = 256;
 var nColumns = 256;
 
@@ -6,4 +9,3 @@ var rawData = new Uint32Array([
 
 
 ]);
-

@@ -1,3 +1,5 @@
+"use strict";
+
 var canvas;
 var gl;
 
@@ -21,10 +23,11 @@ var texture1, texture2, texture3, texture4;
 
 // Create a checkerboard pattern using floats
 
-    
+
 var image1 = new Uint8Array(4*texSize*texSize);
 
     for ( var i = 0; i < texSize; i++ ) {
+        var c;
         for ( var j = 0; j <texSize; j++ ) {
             var patchx = Math.floor(i/(texSize/numChecks));
             var patchy = Math.floor(j/(texSize/numChecks));
@@ -38,7 +41,7 @@ var image1 = new Uint8Array(4*texSize*texSize);
         }
     }
 
-        
+
 var pointsArray = [];
 var colorsArray = [];
 var texCoordsArray = [];
@@ -76,7 +79,7 @@ var vertexColors = [
     vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
 
     vec4( 0.0, 1.0, 1.0, 1.0 )   // cyan
-];        
+];
 window.onload = init;
 
 
@@ -85,45 +88,45 @@ function configureTexture(image) {
     texture1 = gl.createTexture();
     gl.bindTexture( gl.TEXTURE_2D, texture1 );
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, texSize, texSize, 0, 
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, texSize, texSize, 0,
         gl.RGBA, gl.UNSIGNED_BYTE, image);
     gl.generateMipmap( gl.TEXTURE_2D );
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
            gl.NEAREST);
     gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
 };
 
 function quad(a, b, c, d) {
 
-     pointsArray.push(vertices[a]); 
-     colorsArray.push(vertexColors[a]); 
+     pointsArray.push(vertices[a]);
+     colorsArray.push(vertexColors[a]);
      texCoordsArray.push(texCoord[0]);
 
-     pointsArray.push(vertices[b]); 
+     pointsArray.push(vertices[b]);
      colorsArray.push(vertexColors[a]);
-     texCoordsArray.push(texCoord[1]); 
+     texCoordsArray.push(texCoord[1]);
 
-     pointsArray.push(vertices[c]); 
+     pointsArray.push(vertices[c]);
      colorsArray.push(vertexColors[a]);
-     texCoordsArray.push(texCoord[2]); 
-    
-     pointsArray.push(vertices[a]); 
-     colorsArray.push(vertexColors[a]);
-     texCoordsArray.push(texCoord[0]); 
+     texCoordsArray.push(texCoord[2]);
 
-     pointsArray.push(vertices[c]); 
+     pointsArray.push(vertices[a]);
      colorsArray.push(vertexColors[a]);
-     texCoordsArray.push(texCoord[2]); 
+     texCoordsArray.push(texCoord[0]);
 
-     pointsArray.push(vertices[d]); 
+     pointsArray.push(vertices[c]);
      colorsArray.push(vertexColors[a]);
-     texCoordsArray.push(texCoord[3]); 
+     texCoordsArray.push(texCoord[2]);
+
+     pointsArray.push(vertices[d]);
+     colorsArray.push(vertexColors[a]);
+     texCoordsArray.push(texCoord[3]);
 }
 
 
 function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -135,7 +138,7 @@ function init() {
     //
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     quad( 1, 0, 3, 2 );
 
     var cBuffer = gl.createBuffer();
@@ -151,7 +154,7 @@ function init() {
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
-    
+
     var tBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer);
     gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
@@ -160,7 +163,7 @@ function init() {
     gl.enableVertexAttribArray(vTexCoord);
 
     configureTexture(image1);
-    
+
     modelViewMatrixLoc = gl.getUniformLocation( program, "modelViewMatrix" );
     projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
 
@@ -178,37 +181,37 @@ function init() {
     document.getElementById("fovSlider").onchange = function(event) {
         fovy = event.target.value;
     };
-    
+
         document.getElementById("Texture Style").onclick = function( event) {
           //switch(event.srcElement.index) {
           switch(event.target.index) {
             case 0:
-               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
                    gl.NEAREST_MIPMAP_NEAREST);
-               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, 
+               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
                     gl.NEAREST );
                break;
             case 1:
-               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+               gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
                     gl.NEAREST_MIPMAP_LINEAR);
                 gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
                     gl.LINEAR );
                break;
            case 2:
-                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
                     gl.LINEAR_MIPMAP_NEAREST );
-                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, 
+                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
                     gl.NEAREST );
                break;
             case 3:
-                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
                     gl.LINEAR_MIPMAP_LINEAR );
-                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, 
+                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
                     gl.LINEAR );
                break;
         };
     };
-       
+
     render();
 }
 

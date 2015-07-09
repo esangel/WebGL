@@ -1,4 +1,6 @@
-// Note that because this example is 2D, the renderbuffer is not needed 
+"use strict";
+
+// Note that because this example is 2D, the renderbuffer is not needed
 // I have commented out the relevent lines of code
 // If you are doing a 3D ap and need a depth buffer then uncomment these lines
 
@@ -61,11 +63,11 @@ function divideTriangle( a, b, c, count )
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
-    
-    
+
+
 // Create an empty texture
 
     texture1 = gl.createTexture();
@@ -103,9 +105,9 @@ window.onload = function init() {
     //
     program1 = initShaders( gl, "vertex-shader1", "fragment-shader1" );
     program2 = initShaders( gl, "vertex-shader2", "fragment-shader2" );
-    
+
     gl.useProgram( program1 );
-    
+
     var vertices2 = [
         vec2(-1, -1),
         vec2(0, 1),
@@ -114,10 +116,10 @@ window.onload = function init() {
 
     divideTriangle(vertices2[0], vertices2[1], vertices2[2], numTimesToSubdivide);
 
-//______________________________________________    
+//______________________________________________
 
     // Create and initialize a buffer object
-    
+
     buffer1 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buffer1 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
@@ -127,40 +129,40 @@ window.onload = function init() {
     gl.enableVertexAttribArray( vPosition );
 
     // Bind FBO and render
-    
+
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     //gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
 
-                  
+
     gl.viewport(0, 0, 512, 512);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT );
-    
+
     gl.drawArrays(gl.TRIANGLES, 0, numVertices);
 
     // Bind to window system frame buffer, unbind the texture
-    
+
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    
+
     //gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-    
+
     //gl.deleteFramebuffer(framebuffer);
     //gl.deleteRenderbuffer(renderbuffer);
-    
+
     //gl.disableVertexAttribArray(vPos);
-    
+
     gl.useProgram(program2);
-        
+
     gl.activeTexture(gl.TEXTURE0);
-    
+
     gl.bindTexture(gl.TEXTURE_2D, texture1);
-    
+
     // send data to GPU for normal render
-        
+
     buffer2 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buffer2);
     gl.bufferData(gl.ARRAY_BUFFER,   flatten(vertices), gl.STATIC_DRAW);
-    
+
     var vPosition = gl.getAttribLocation( program2, "vPosition" );
     gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
@@ -168,24 +170,24 @@ window.onload = function init() {
     buffer3 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buffer3);
     gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoord), gl.STATIC_DRAW);
-    
-    var vTexCoord = gl.getAttribLocation( program2, "vTexCoord"); 
+
+    var vTexCoord = gl.getAttribLocation( program2, "vTexCoord");
     gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vTexCoord );
-    
+
     gl.uniform1i( gl.getUniformLocation(program2, "texture"), 0);
-    
-    gl.clearColor( 1.0, 1.0, 1.0, 1.0 ); 
+
+    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
     gl.viewport(0, 0, 512, 512);
-    
+
     render();
-    
+
 }
 
 
 function render() {
-            
-    gl.clear( gl.COLOR_BUFFER_BIT );      
+
+    gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
 }

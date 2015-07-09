@@ -1,3 +1,4 @@
+"use strict";
 
 var canvas;
 var gl;
@@ -22,7 +23,7 @@ var thetaLoc;
 window.onload = function ()
 {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -30,7 +31,7 @@ window.onload = function ()
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.5,0.5, 0.5, 1.0 );
-    
+
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -40,7 +41,7 @@ window.onload = function ()
     //
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     var cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
@@ -57,8 +58,8 @@ window.onload = function ()
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
-    thetaLoc = gl.getUniformLocation(program, "theta"); 
-    
+    thetaLoc = gl.getUniformLocation(program, "theta");
+
     document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
     document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
     document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
@@ -84,7 +85,7 @@ function colorCube()
     quad( 5, 4, 0, 1 );
 }
 
-function quad(a, b, c, d) 
+function quad(a, b, c, d)
 {
     var vertices = [
         vec3( -0.5, -0.5,  0.5 ),
@@ -130,4 +131,3 @@ function render()
 
     requestAnimFrame( render );
 }
-

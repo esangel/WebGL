@@ -1,3 +1,5 @@
+"use strict";
+
 var elt;
 
 var canvas;
@@ -27,7 +29,7 @@ var vertices = [
         vec4( 0.5,  0.5, -0.5, 1.0 ),
         vec4( 0.5, -0.5, -0.5, 1.0 ),
     ];
-    
+
 var vertexColors = [
         vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
         vec4( 1.0, 0.0, 0.0, 1.0 ),  // red
@@ -78,24 +80,24 @@ function quad(a, b, c, d) {
      var normal = vec3(normal);
      normal = normalize(normal);
 
-     pointsArray.push(vertices[a]); 
-     normalsArray.push(normal); 
+     pointsArray.push(vertices[a]);
+     normalsArray.push(normal);
      colorsArray.push(vertexColors[a]);
-     pointsArray.push(vertices[b]); 
-     normalsArray.push(normal); 
+     pointsArray.push(vertices[b]);
+     normalsArray.push(normal);
      colorsArray.push(vertexColors[a]);
-     pointsArray.push(vertices[c]); 
-     normalsArray.push(normal);  
-     colorsArray.push(vertexColors[a]); 
-     pointsArray.push(vertices[a]);  
-     normalsArray.push(normal); 
+     pointsArray.push(vertices[c]);
+     normalsArray.push(normal);
      colorsArray.push(vertexColors[a]);
-     pointsArray.push(vertices[c]); 
-     normalsArray.push(normal); 
+     pointsArray.push(vertices[a]);
+     normalsArray.push(normal);
      colorsArray.push(vertexColors[a]);
-     pointsArray.push(vertices[d]); 
-     normalsArray.push(normal);  
-     colorsArray.push(vertexColors[a]);  
+     pointsArray.push(vertices[c]);
+     normalsArray.push(normal);
+     colorsArray.push(vertexColors[a]);
+     pointsArray.push(vertices[d]);
+     normalsArray.push(normal);
+     colorsArray.push(vertexColors[a]);
 }
 
 
@@ -112,24 +114,24 @@ function colorCube()
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     var ctx = canvas.getContext("experimental-webgl", {preserveDrawingBuffer: true});
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
-    
+
     elt = document.getElementById("test");
 
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.5, 0.5, 0.5, 1.0 );
-    
+
     gl.enable(gl.CULL_FACE);
-    
+
     var texture = gl.createTexture();
     gl.bindTexture( gl.TEXTURE_2D, texture );
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0, 
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0,
        gl.RGBA, gl.UNSIGNED_BYTE, null);
     gl.generateMipmap(gl.TEXTURE_2D);
 
@@ -155,13 +157,13 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     //
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     colorCube();
-    
+
     var cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW );
-    
+
     var vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vColor );
@@ -170,7 +172,7 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     var nBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW );
-    
+
     var vNormal = gl.getAttribLocation( program, "vNormal" );
     gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vNormal );
@@ -178,44 +180,44 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     var vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
-    
+
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
     thetaLoc = gl.getUniformLocation(program, "theta");
-    
+
     viewerPos = vec3(0.0, 0.0, -20.0 );
 
     projection = ortho(-1, 1, -1, 1, -100, 100);
-    
-    ambientProduct = mult(lightAmbient, materialAmbient);
-    diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    specularProduct = mult(lightSpecular, materialSpecular); 
-    
+
+    var ambientProduct = mult(lightAmbient, materialAmbient);
+    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    var specularProduct = mult(lightSpecular, materialSpecular);
+
     document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
     document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
     document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
     document.getElementById("ButtonT").onclick = function(){flag = !flag};
-    
+
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
        flatten(ambientProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),
        flatten(diffuseProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), 
-       flatten(specularProduct) );	
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), 
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"),
+       flatten(specularProduct) );
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
        flatten(lightPosition) );
-       
-    gl.uniform1f(gl.getUniformLocation(program, 
+
+    gl.uniform1f(gl.getUniformLocation(program,
        "shininess"),materialShininess);
-    
+
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),
        false, flatten(projection));
 
 
     canvas.addEventListener("mousedown", function(event){
-        
+
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
         gl.clear( gl.COLOR_BUFFER_BIT);
         gl.uniform3fv(thetaLoc, theta);
@@ -225,7 +227,7 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         }
         var x = event.clientX;
         var y = canvas.height -event.clientY;
-          
+
         gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, color);
 
         if(color[0]==255)
@@ -237,7 +239,7 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         else elt.innerHTML = "<div> yellow </div>";
         else if(color[2]==255) elt.innerHTML = "<div> green </div>";
         else elt.innerHTML = "<div> background </div>";
-        
+
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
         gl.uniform1i(gl.getUniformLocation(program, "i"), 0);
@@ -245,8 +247,8 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.uniform3fv(thetaLoc, theta);
         gl.drawArrays(gl.TRIANGLES, 0, 36);
 
-    }); 
-          
+    });
+
     render();
 }
 
@@ -257,7 +259,7 @@ var render = function(){
     modelView = mult(modelView, rotate(theta[xAxis], [1, 0, 0] ));
     modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
     modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
-    
+
     gl.uniformMatrix4fv( gl.getUniformLocation(program,
             "modelViewMatrix"), false, flatten(modelView) );
 

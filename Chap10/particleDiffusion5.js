@@ -1,3 +1,5 @@
+"use strict";
+
 var t1, t2;
 t1 = new Date();
 
@@ -85,7 +87,7 @@ window.onload = function init() {
     if(status != gl.FRAMEBUFFER_COMPLETE) alert('Framebuffer Not Complete');
 
 
-    for(var i = 0; i<numPoints/2; i++) { 
+    for(var i = 0; i<numPoints/2; i++) {
          vertices[4+i] = vec2(0.5, 0.5);
          vertices[4+i+numPoints/2] = vec2(-0.5, -0.5);
 		 }
@@ -120,7 +122,7 @@ window.onload = function init() {
     gl.uniform1f( gl.getUniformLocation(program1, "s"), diffuse );
 
     gl.useProgram(program2);
-    
+
     vPosition2 = gl.getAttribLocation( program2, "vPosition2" );
     gl.enableVertexAttribArray( vPosition2 );
     gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0,0 );
@@ -202,7 +204,7 @@ var render = function(){
     gl.vertexAttribPointer( vPosition2, 2, gl.FLOAT, false, 0, 0);
     gl.uniform4f( gl.getUniformLocation(program2, "color"), 0.0, 0.0, 0.0, 1.0);
     gl.drawArrays(gl.POINTS, 4, numPoints);
-	
+
     gl.useProgram(program1);
     gl.enableVertexAttribArray( vPosition1 );
     gl.enableVertexAttribArray( vTexCoord );

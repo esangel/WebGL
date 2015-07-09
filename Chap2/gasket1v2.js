@@ -1,3 +1,4 @@
+"use strict";
 
 var gl;
 var points;
@@ -6,8 +7,8 @@ var NumPoints = 5000;
 
 window.onload = function init()
 {
-    canvas = document.getElementById( "gl-canvas" );
-    
+    var canvas = document.getElementById( "gl-canvas" );
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -51,12 +52,12 @@ window.onload = function init()
     //
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    
+
     //  Load shaders and initialize attribute buffers
     var program = initShaders( gl, "shaders/vshader21.glsl",
                                "shaders/fshader21.glsl" );
     gl.useProgram( program );
-    
+
     // Load the data into the GPU
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );

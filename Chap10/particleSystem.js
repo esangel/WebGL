@@ -1,4 +1,4 @@
-
+"use strict";
 
 var canvas;
 var gl;
@@ -68,11 +68,11 @@ function particle(){
     p.position = vec4(0, 0, 0, 1);
     p.velocity = vec4(0, 0, 0, 0);
     p.mass = 1;
-    
+
     return p;
 }
 
-particleSystem = [];
+ var particleSystem = [];
 
 for(var i = 0; i< maxNumParticles; i++) particleSystem.push(particle());
 
@@ -83,14 +83,14 @@ for(var i=0; i<maxNumParticles; i++) d2[i] =  new Float32Array(maxNumParticles);
 var bufferId;
 
 function quad(a, b, c, d) {
-     pointsArray.push(vertices[a]); 
-     colorsArray.push(vertexColors[0]); 
-     pointsArray.push(vertices[b]); 
-     colorsArray.push(vertexColors[0]); 
-     pointsArray.push(vertices[c]); 
-     colorsArray.push(vertexColors[0]);   
-     pointsArray.push(vertices[d]); 
-     colorsArray.push(vertexColors[0]);   
+     pointsArray.push(vertices[a]);
+     colorsArray.push(vertexColors[0]);
+     pointsArray.push(vertices[b]);
+     colorsArray.push(vertexColors[0]);
+     pointsArray.push(vertices[c]);
+     colorsArray.push(vertexColors[0]);
+     pointsArray.push(vertices[d]);
+     colorsArray.push(vertexColors[0]);
 }
 
 
@@ -107,24 +107,24 @@ function colorCube()
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    
+
 
     //
     //  Load shaders and initialize attribute buffers
     //
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
-    
+
     gl.useProgram( program );
-    
+
     bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-    
+
     document.getElementById("Button1").onclick = function(){doubleNumParticles(); update();};
     document.getElementById("Button2").onclick = function(){numParticles /= 2; update();};
     document.getElementById("Button3").onclick = function(){speed *=2;update();};
@@ -134,25 +134,25 @@ window.onload = function init() {
     document.getElementById("Button7").onclick = function(){gravity = !gravity; update()};
     document.getElementById("Button8").onclick = function(){elastic = !elastic; update()};
     document.getElementById("Button9").onclick = function(){repulsion = !repulsion; update()};
-       
+
     gl.clearColor( 0.5, 0.5, 0.5, 1.0 );
 
     eye =  vec3(1.5, 1.0, 1.0);
     at = vec3(0.0, 0.0, 0.0);
     up = vec3(0.0, 1.0, 0.0);
-    
+
     modelViewMatrix = lookAt(eye, at, up);
     projectionMatrix = ortho(-2.0,2.0,-2.0,2.0,-4.0,4.0);
-        
+
     gl.uniformMatrix4fv(gl.getUniformLocation( program, "modelViewMatrix" ), false, flatten(modelViewMatrix) );
     gl.uniformMatrix4fv( gl.getUniformLocation( program, "projectionMatrix" ), false, flatten(projectionMatrix) );
-    
-    gl.uniform1f(gl.getUniformLocation(program, "pointSize"), pointSize); 
-    
+
+    gl.uniform1f(gl.getUniformLocation(program, "pointSize"), pointSize);
+
     cBufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
     gl.bufferData( gl.ARRAY_BUFFER, 16*(maxNumParticles+numVertices), gl.STATIC_DRAW );
-    
+
     var vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vColor );
@@ -160,22 +160,22 @@ window.onload = function init() {
     vBufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBufferId );
     gl.bufferData( gl.ARRAY_BUFFER, 16*(maxNumParticles+numVertices), gl.STATIC_DRAW );
-    
+
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
-    
-    gl.uniform1f(gl.getUniformLocation(program, "pointSize"), pointSize); 
-    
+
+    gl.uniform1f(gl.getUniformLocation(program, "pointSize"), pointSize);
+
     simulation();
 }
 
 var simulation = function(){
-    
+
     colorCube();
-    
-    // set up particles with random locations and velocities 
-        
+
+    // set up particles with random locations and velocities
+
     for ( var i = 0; i < numParticles; i++ ) {
         particleSystem[i].mass = 1.0;
         particleSystem[i].color = vertexColors[i % numColors];
@@ -185,24 +185,24 @@ var simulation = function(){
         }
         particleSystem[i].position[3] = 1.0;
     }
-    
+
     for(var i =0; i<numParticles; i++) {
        pointsArray.push(particleSystem[i].position);
        colorsArray.push(particleSystem[i].color);
        }
-       
+
     gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(colorsArray));
-    
+
     gl.bindBuffer( gl.ARRAY_BUFFER, vBufferId );
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(pointsArray));
-    
+
     render();
- 
+
 }
 
 var doubleNumParticles = function(){
-        
+
     if(2*numParticles > maxNumParticles) return;
     for ( var i = 0; i < 2*numParticles; i++ ) {
         particleSystem[i].mass = 1.0;
@@ -213,7 +213,7 @@ var doubleNumParticles = function(){
         }
         particleSystem[i].position[3] = 1.0;;
     }
-    
+
        numParticles *= 2;
 
        update();
@@ -227,10 +227,10 @@ var forces = function( ParticleI)
     if ( repulsion )
         for ( var ParticleK = 0; ParticleK < numParticles; ParticleK++ ) { /* repulsive force */
             if ( ParticleK != ParticleI ){
-               var t = 
+               var t =
                  normalize(subtract(particleSystem[ParticleI].position,
-                              particleSystem[ParticleK].position)); 
-                var d2 = dot(t, t);         
+                              particleSystem[ParticleK].position));
+                var d2 = dot(t, t);
                 force = add(force, scale(0.01/d2, t));
                 }
         }
@@ -245,13 +245,13 @@ var collision = function(particleId) {
     for (var i = 0; i < 3; i++ ) {
         if ( particleSystem[particleId].position[i] >= 1.0 ) {
             particleSystem[particleId].velocity[i] = -coef * particleSystem[particleId].velocity[i];
-            
+
             particleSystem[particleId].position[i] =
                 1.0 - coef * ( particleSystem[particleId].position[i] - 1.0 );
         }
         if ( particleSystem[particleId].position[i] <= -1.0 ) {
             particleSystem[particleId].velocity[i] = -coef * particleSystem[particleId].velocity[i];
-            
+
             particleSystem[particleId].position[i] =
                 -1.0 - coef * ( particleSystem[particleId].position[i] + 1.0 );
         }
@@ -262,7 +262,7 @@ var collision = function(particleId) {
 var update = function(){
     for (var i = 0; i < numParticles; i++ ) {
             particleSystem[i].position = add( particleSystem[i].position, scale(speed*dt, particleSystem[i].velocity));
-            particleSystem[i].velocity = add( particleSystem[i].velocity, scale(speed*dt/ particleSystem[i].mass, forces(i))); 
+            particleSystem[i].velocity = add( particleSystem[i].velocity, scale(speed*dt/ particleSystem[i].mass, forces(i)));
         }
     for (var i = 0; i < numParticles; i++ ) collision(i);
     colorsArray = [];

@@ -1,9 +1,12 @@
+"use strict";
+
 //
 // Display a Mandelbrot set
 //
 
 var canvas;
 var gl;
+var render;
 
 window.onload = init;
 
@@ -32,32 +35,32 @@ var texImage = new Uint8Array(4*n*m);
 	    var p =  [ x, y ];
 
             for ( var k = 0; k < max; k++ ) {
-            
+
 		// compute c = c^2 + p
-        
+
             c = [c[0]*c[0]-c[1]*c[1], 2*c[0]*c[1]];
             c = [c[0]+p[0],  c[1]+p[1]];
-            v = Math.sqrt(c[0]*c[0]+c[1]*c[1]);
-            
+            var v = Math.sqrt(c[0]*c[0]+c[1]*c[1]);
+
             if ( v > 4.0 ) break;      /* assume not in set if mag > 4 */
         }
-        
+
         // assign gray level to point based on its magnitude */
 
         if ( v > 1.0 ) v = 1.0;        /* clamp if > 1 */
-            
+
         texImage[4*i*m+4*j] = 255*v;
         texImage[4*i*m+4*j+1] =255*( 0.5* (Math.sin( v*Math.PI/180 ) + 1.0));
         texImage[4*i*m+4*j+2] = 255*(1.0 - v);
         texImage[4*i*m+4*j+3] = 255;
-        
+
      }
 
 //----------------------------------------------------------------------------
 
 function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -71,9 +74,9 @@ function init() {
     gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
 
     // Create and initialize a buffer object
-    
+
     var points = [
-       
+
     vec4(0.0, 0.0, 0.0, 1.0),
 	vec4(0.0, 1.0, 0.0, 1.0),
 	vec4(1.0, 1.0, 0.0, 1.0),
@@ -93,7 +96,7 @@ var texCoord = [
 ];
 
     // Load shaders and use the resulting shader program
-    
+
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
@@ -105,22 +108,22 @@ var texCoord = [
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0,0);
     gl.bufferData( gl.ARRAY_BUFFER,  flatten(points), gl.STATIC_DRAW );
 
-    
+
     var tbuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, tbuffer );
-    var vTexCoord = gl.getAttribLocation( program, "vTexCoord" ); 
+    var vTexCoord = gl.getAttribLocation( program, "vTexCoord" );
     gl.enableVertexAttribArray( vTexCoord );
     gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0,0 );
     gl.bufferData( gl.ARRAY_BUFFER,  flatten(texCoord), gl.STATIC_DRAW );
 
     // Set our texture samples to the active texture unit
     gl.uniform1i( gl.getUniformLocation(program, "texture"), 0 );
-    
-    
+
+
     gl.bufferData( gl.ARRAY_BUFFER,  flatten(texCoord), gl.STATIC_DRAW );
 
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    
+
     gl.viewport(0, 0, canvas.width, canvas.height);
     render();
 }
@@ -128,10 +131,7 @@ var texCoord = [
 //----------------------------------------------------------------------------
 
 
-var render = function() {
+    render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays( gl.TRIANGLES, 0, 6 );
 }
-
-
-

@@ -1,3 +1,5 @@
+"use strict";
+
 //
 // Display a Mandelbrot set
 //
@@ -24,7 +26,7 @@ var program;
 
 onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
@@ -32,9 +34,9 @@ onload = function init() {
 
 
     // Create and initialize a buffer object
-    
+
     var points = [
-       
+
     vec4(0.0, 0.0, 0.0, 1.0),
 	vec4(0.0, 1.0, 0.0, 1.0),
 	vec4(1.0, 1.0, 0.0, 1.0),
@@ -44,7 +46,7 @@ onload = function init() {
 ];
 
     // Load shaders and use the resulting shader program
-    
+
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
@@ -52,11 +54,11 @@ onload = function init() {
     var buffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
     var vPosition = gl.getAttribLocation( program, "vPosition" );
-    
+
     gl.enableVertexAttribArray( vPosition );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0,0);
     gl.bufferData( gl.ARRAY_BUFFER,  flatten(points), gl.STATIC_DRAW );
-    
+
     gl.uniform1f( gl.getUniformLocation(program, "scale"), scale);
     gl.uniform1f( gl.getUniformLocation(program, "cx"), cx);
     gl.uniform1f( gl.getUniformLocation(program, "cy"), cy);
@@ -75,9 +77,9 @@ onload = function init() {
        gl.uniform1f( gl.getUniformLocation(program, "scale"), scale);
     };
 
-       
+
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    
+
     gl.viewport(0, 0, canvas.width, canvas.height);
     render();
 }
@@ -90,6 +92,3 @@ var render = function() {
     gl.drawArrays( gl.TRIANGLES, 0, 6 );
     requestAnimFrame(render);
 }
-
-
-

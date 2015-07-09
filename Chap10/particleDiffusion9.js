@@ -1,3 +1,5 @@
+"use strict";
+
 var t1, t2;
 t1 = new Date();
 

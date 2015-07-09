@@ -1,3 +1,4 @@
+"use strict";
 
 var canvas;
 var gl;
@@ -26,7 +27,7 @@ function multq( a,  b)
 
    var s = vec3(a[1], a[2], a[3]);
    var t = vec3(b[1], b[2], b[3]);
-   return(vec4(a[0]*b[0] - dot(s,t), add(cross(t, s), add(scalev(a[0],t), scalev(b[0],s)))));
+   return(vec4(a[0]*b[0] - dot(s,t), add(cross(t, s), add(scale(a[0],t), scale(b[0],s)))));
 }
 
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var nRows = 256;
 var nColumns = 256;
 
@@ -22,4 +24,3 @@ for(var i=0; i<nRows;i++) for(var j=0; j<nColumns; j++) {
   data[i*nColumns+j] = 255*(rawData[i*nColumns+j]/max);
   //console.log(data[i*nColumns+j]);
   }
-

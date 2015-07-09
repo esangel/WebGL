@@ -1,3 +1,4 @@
+"use strict";
 
 var canvas;
 var gl;
@@ -16,7 +17,7 @@ var colors = [
     vec4( 0.0, 0.0, 1.0, 1.0 ),  // blue
     vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
     vec4( 0.0, 1.0, 1.0, 1.0)   // cyan
-];    
+];
 var t;
 var numPolygons = 0;
 var numIndices = [];
@@ -25,16 +26,16 @@ var start = [0];
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
-    
+
     var m = document.getElementById("mymenu");
-    
+
     m.addEventListener("click", function() {
        cindex = m.selectedIndex;
         });
-        
+
     var a = document.getElementById("Button1")
     a.addEventListener("click", function(){
     numPolygons++;
@@ -44,13 +45,13 @@ window.onload = function init() {
     });
 
     canvas.addEventListener("mousedown", function(event){
-        t  = vec2(2*event.clientX/canvas.width-1, 
+        t  = vec2(2*event.clientX/canvas.width-1,
            2*(canvas.height-event.clientY)/canvas.height-1);
         gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
         gl.bufferSubData(gl.ARRAY_BUFFER, 8*index, flatten(t));
 
         t = vec4(colors[cindex]);
-        
+
         gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
         gl.bufferSubData(gl.ARRAY_BUFFER, 16*index, flatten(t));
 
@@ -69,14 +70,14 @@ window.onload = function init() {
     //
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
     gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STATIC_DRAW );
     var vPos = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPos, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPos );
-    
+
     var cBufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
     gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STATIC_DRAW );
@@ -86,7 +87,7 @@ window.onload = function init() {
 }
 
 function render() {
-    
+
     gl.clear( gl.COLOR_BUFFER_BIT );
 
     for(var i=0; i<numPolygons; i++) {

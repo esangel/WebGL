@@ -1,3 +1,4 @@
+"use strict";
 
 var nRows = 50;
 var nColumns = 50;
@@ -14,9 +15,9 @@ for(var i=0; i<nRows; i++) {
     for(var j=0; j<nColumns; j++) {
         var y = Math.PI*(4*j/nRows-2.0);
         var r = Math.sqrt(x*x+y*y)
-        
+
         // take care of 0/0 for r = 0
-        
+
 
         if(r) data[i][j] = Math.sin(r)/r;
         else data[i][j] = 1;
@@ -50,17 +51,17 @@ const up = vec3(0.0, 1.0, 0.0);
 window.onload = function init() {
 
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    
+
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
 
 // vertex array of data for nRows and nColumns of line strips
-    
+
     for(var i=0; i<nRows-1; i++) for(var j=0; j<nColumns-1;j++) {
         pointsArray.push(vec4(2*i/nRows-1, data[i][j], 2*j/nColumns-1, 1.0));
     }
@@ -72,16 +73,16 @@ window.onload = function init() {
     //
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
-    
+
 
     var vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
-    
+
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
-     
+
     modelViewMatrixLoc = gl.getUniformLocation( program, "modelViewMatrix" );
     projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
 
@@ -106,20 +107,20 @@ window.onload = function init() {
 
 var render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            
-    eye = vec3(radius*Math.sin(theta)*Math.cos(phi), 
+
+    eye = vec3(radius*Math.sin(theta)*Math.cos(phi),
         radius*Math.sin(theta)*Math.sin(phi), radius*Math.cos(theta));
 
     modelViewMatrix = lookAt(eye, at , up);
     projectionMatrix = ortho(left, right, bottom, ytop, near, far);
-            
+
     gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(modelViewMatrix) );
     gl.uniformMatrix4fv( projectionMatrixLoc, false, flatten(projectionMatrix) );
 
 // render columns of data then rows
-        
-    for(var i=0; i<nRows; i++) gl.drawArrays( gl.LINE_STRIP, i*nColumns, nColumns );            
+
+    for(var i=0; i<nRows; i++) gl.drawArrays( gl.LINE_STRIP, i*nColumns, nColumns );
     for(var i=0; i<nColumns; i++) gl.drawArrays( gl.LINE_STRIP, i*nRows+pointsArray.length/2, nRows );
-            
+
     requestAnimFrame(render);
 }

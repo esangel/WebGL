@@ -1,3 +1,6 @@
+"use strict";
+
+var canvas, gl, program;
 
 var NumVertices = 36; //(6 faces)(2 triangles/face)(3 vertices/triangle)
 
@@ -59,18 +62,18 @@ var vBuffer, cBuffer;
 //----------------------------------------------------------------------------
 
 function quad(  a,  b,  c,  d ) {
-    colors.push(vertexColors[a]); 
-    points.push(vertices[a]); 
-    colors.push(vertexColors[a]); 
-    points.push(vertices[b]); 
-    colors.push(vertexColors[a]); 
+    colors.push(vertexColors[a]);
+    points.push(vertices[a]);
+    colors.push(vertexColors[a]);
+    points.push(vertices[b]);
+    colors.push(vertexColors[a]);
     points.push(vertices[c]);
-    colors.push(vertexColors[a]); 
-    points.push(vertices[a]); 
-    colors.push(vertexColors[a]); 
-    points.push(vertices[c]); 
-    colors.push(vertexColors[a]); 
-    points.push(vertices[d]); 
+    colors.push(vertexColors[a]);
+    points.push(vertices[a]);
+    colors.push(vertexColors[a]);
+    points.push(vertices[c]);
+    colors.push(vertexColors[a]);
+    points.push(vertices[d]);
 }
 
 
@@ -102,35 +105,35 @@ function scale4(a, b, c) {
 window.onload = function init() {
 
     canvas = document.getElementById( "gl-canvas" );
-    
+
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
-    
+
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    
+
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    gl.enable( gl.DEPTH_TEST ); 
-    
+    gl.enable( gl.DEPTH_TEST );
+
     //
     //  Load shaders and initialize attribute buffers
     //
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
-    
+
     gl.useProgram( program );
 
     colorCube();
-    
+
     // Load shaders and use the resulting shader program
-    
-    program = initShaders( gl, "vertex-shader", "fragment-shader" );    
+
+    program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
     // Create and initialize  buffer objects
-    
+
     vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
-    
+
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
@@ -152,12 +155,12 @@ window.onload = function init() {
     document.getElementById("slider3").onchange = function() {
          theta[2] =  event.srcElement.value;
     };
-    
+
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
 
     projectionMatrix = ortho(-10, 10, -10, 10, -10, 10);
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),  false, flatten(projectionMatrix) );
-    
+
     render();
 }
 
@@ -177,7 +180,7 @@ function base() {
 
 function upperArm() {
     var s = scale4(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_WIDTH);
-    var instanceMatrix = mult(translate( 0.0, 0.5 * UPPER_ARM_HEIGHT, 0.0 ),s);    
+    var instanceMatrix = mult(translate( 0.0, 0.5 * UPPER_ARM_HEIGHT, 0.0 ),s);
     var t = mult(modelViewMatrix, instanceMatrix);
     gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
@@ -201,11 +204,11 @@ function lowerArm()
 var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-    
+
     modelViewMatrix = rotate(theta[Base], 0, 1, 0 );
     base();
- 
-    modelViewMatrix = mult(modelViewMatrix, translate(0.0, BASE_HEIGHT, 0.0)); 
+
+    modelViewMatrix = mult(modelViewMatrix, translate(0.0, BASE_HEIGHT, 0.0));
     modelViewMatrix = mult(modelViewMatrix, rotate(theta[LowerArm], 0, 0, 1 ));
     lowerArm();
 
@@ -215,6 +218,3 @@ var render = function() {
 
     requestAnimFrame(render);
 }
-
-
-

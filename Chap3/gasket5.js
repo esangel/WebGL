@@ -70,7 +70,7 @@ function divideTriangle( a, b, c, count )
 
     // check for end of recursion
 
-    if ( count === 0 ) {
+    if ( count <= 0 ) {
         triangle( a, b, c );
     }
     else {

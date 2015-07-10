@@ -53,7 +53,7 @@ function init()
     gl.enableVertexAttribArray( vPosition );
 
         document.getElementById("slider").onchange = function() {
-        numTimesToSubdivide = event.srcElement.value;
+        numTimesToSubdivide = parseInt(event.srcElement.value);
     };
 
 
@@ -70,7 +70,7 @@ function divideTriangle( a, b, c, count )
 
     // check for end of recursion
 
-    if ( count <= 0 ) {
+    if ( count === 0 ) {
         triangle( a, b, c );
     }
     else {

@@ -118,26 +118,26 @@ window.onload = function init() {
 // sliders for viewing parameters
 
     document.getElementById("depthSlider").onchange = function() {
-        far = event.srcElement.value/2;
-        near = -event.srcElement.value/2;
+        far = this.value/2;
+        near = -this.value/2;
     };
 
     document.getElementById("radiusSlider").onchange = function() {
-       radius = event.srcElement.value;
+       radius = this.value;
     };
     document.getElementById("thetaSlider").onchange = function() {
-        theta = event.srcElement.value* Math.PI/180.0;
+        theta = this.value* Math.PI/180.0;
     };
     document.getElementById("phiSlider").onchange = function() {
-        phi = event.srcElement.value* Math.PI/180.0;
+        phi = this.value* Math.PI/180.0;
     };
     document.getElementById("heightSlider").onchange = function() {
-        ytop = event.srcElement.value/2;
-        bottom = -event.srcElement.value/2;
+        ytop = this.value/2;
+        bottom = -this.value/2;
     };
     document.getElementById("widthSlider").onchange = function() {
-        right = event.srcElement.value/2;
-        left = -event.srcElement.value/2;
+        right = this.value/2;
+        left = -this.value/2;
     };
 
     render();

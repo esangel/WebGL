@@ -147,13 +147,13 @@ window.onload = function init() {
     gl.enableVertexAttribArray( vColor );
 
     document.getElementById("slider1").onchange = function() {
-        theta[0] = event.srcElement.value;
+        theta[0] = this.value;
     };
     document.getElementById("slider2").onchange = function() {
-         theta[1] = event.srcElement.value;
+         theta[1] = this.value;
     };
     document.getElementById("slider3").onchange = function() {
-         theta[2] =  event.srcElement.value;
+         theta[2] =  this.value;
     };
 
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");

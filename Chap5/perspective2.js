@@ -119,25 +119,25 @@ window.onload = function init() {
 // sliders for viewing parameters
 
     document.getElementById("zFarSlider").onchange = function() {
-        far = event.srcElement.value;
+        far = this.value;
     };
     document.getElementById("zNearSlider").onchange = function() {
-        near = event.srcElement.value;
+        near = this.value;
     };
     document.getElementById("radiusSlider").onchange = function() {
-       radius = event.srcElement.value;
+       radius = this.value;
     };
     document.getElementById("thetaSlider").onchange = function() {
-        theta = event.srcElement.value* Math.PI/180.0;
+        theta = this.value* Math.PI/180.0;
     };
     document.getElementById("phiSlider").onchange = function() {
-        phi = event.srcElement.value* Math.PI/180.0;
+        phi = this.value* Math.PI/180.0;
     };
     document.getElementById("aspectSlider").onchange = function() {
-        aspect = event.srcElement.value;
+        aspect = this.value;
     };
     document.getElementById("fovSlider").onchange = function() {
-        fovy = event.srcElement.value;
+        fovy = this.value;
     };
 
     render();

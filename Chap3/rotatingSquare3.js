@@ -50,10 +50,10 @@ window.onload = function init()
 
     // Initialize event handlers
 
-    document.getElementById("slider").onchange = function() {
+    document.getElementById("slider").onchange = function(event) {
         speed = 100 - event.target.value;
     };
-    document.getElementById("Direction").onclick = function () {
+    document.getElementById("Direction").onclick = function (event) {
         direction = !direction;
     };
 

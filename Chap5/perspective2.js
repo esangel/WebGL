@@ -118,26 +118,26 @@ window.onload = function init() {
 
 // sliders for viewing parameters
 
-    document.getElementById("zFarSlider").onchange = function() {
-        far = event.srcElement.value;
+    document.getElementById("zFarSlider").onchange = function(event) {
+        far = event.target.value;
     };
-    document.getElementById("zNearSlider").onchange = function() {
-        near = event.srcElement.value;
+    document.getElementById("zNearSlider").onchange = function(event) {
+        near = event.target.value;
     };
-    document.getElementById("radiusSlider").onchange = function() {
-       radius = event.srcElement.value;
+    document.getElementById("radiusSlider").onchange = function(event) {
+       radius = event.target.value;
     };
-    document.getElementById("thetaSlider").onchange = function() {
-        theta = event.srcElement.value* Math.PI/180.0;
+    document.getElementById("thetaSlider").onchange = function(event) {
+        theta = event.target.value* Math.PI/180.0;
     };
-    document.getElementById("phiSlider").onchange = function() {
-        phi = event.srcElement.value* Math.PI/180.0;
+    document.getElementById("phiSlider").onchange = function(event) {
+        phi = event.target.value* Math.PI/180.0;
     };
-    document.getElementById("aspectSlider").onchange = function() {
-        aspect = event.srcElement.value;
+    document.getElementById("aspectSlider").onchange = function(event) {
+        aspect = event.target.value;
     };
-    document.getElementById("fovSlider").onchange = function() {
-        fovy = event.srcElement.value;
+    document.getElementById("fovSlider").onchange = function(event) {
+        fovy = event.target.value;
     };
 
     render();

@@ -183,7 +183,6 @@ function init() {
     };
 
         document.getElementById("Texture Style").onclick = function( event) {
-          //switch(event.srcElement.index) {
           switch(event.target.index) {
             case 0:
                gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,

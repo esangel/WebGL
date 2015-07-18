@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <div>
  Center X -2  <input id="Center X" type="range"
@@ -19,10 +20,10 @@ Size 1<input id="Size" type="range"
 attribute  vec4 vPosition;
 
 
-void main() 
+void main()
 {
     gl_Position = vPosition;
-} 
+}
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
@@ -30,46 +31,46 @@ void main()
 precision mediump float;
 
 uniform float cx;
-uniform float cy; 
+uniform float cy;
 
 uniform float scale;
 
 float height;
 float width;
 
-void main() 
-{ 
+void main()
+{
    //float height = 0.5;          /* size of window in complex plane */
    //float width = 0.5;
-   
+
    const int max = 100;             /* number of interations per point */
    const float PI = 3.14159;
-   
-   float n = 1000.0; 
-   float m = 1000.0; 
+
+   float n = 1000.0;
+   float m = 1000.0;
    float v;
 
-   
+
    float x = gl_FragCoord.x  /(n*scale) + cx - 1.0 / (2.0*scale);
    float y = gl_FragCoord.y/(m*scale) + cy - 1.0 / (2.0*scale);
-   
+
    float ax=0.0, ay=0.0;
    float bx, by;
 
 
    for ( int k = 0; k < max; k++ ) {
-            
+
 		// compute c = c^2 + p
-        
+
             bx  = ax*ax-ay*ay;
             by = 2.0*ax*ay;
             ax = bx+x;
             ay = by+y;
             v = ax*ax+ay*ay;
-            
+
             if ( v > 4.0 ) break;      /* assume not in set if mag > 2 */
         }
-        
+
         // assign gray level to point based on its magnitude */
 
         //if ( v > 1.0 ) v = 1.0;        /* clamp if > 1 */
@@ -79,7 +80,7 @@ void main()
         gl_FragColor.b = 1.0-v;
         gl_FragColor.b = 0.5* cos( 19.0*PI*v) + 1.0;
         gl_FragColor.a = 1.0;
-} 
+}
 </script>
 
 <script type="text/javascript" src="../Common/webgl-utils.js"></script>
@@ -88,7 +89,7 @@ void main()
 <script type="text/javascript" src="mandelbrot2.js"></script>
 
 <body>
-<canvas id="gl-canvas" width="1000" height="1000"
+<canvas id="gl-canvas" width="1000" height="1000">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 </body>

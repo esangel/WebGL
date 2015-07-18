@@ -8,7 +8,7 @@ var maxNumVertices  = 3 * maxNumTriangles;
 var index = 0;
 var first = true;
 
-var t1, t2, t3, t4;
+var t, t1, t2, t3, t4;
 
 var cIndex = 0;
 

@@ -164,10 +164,12 @@ function mat4()
 
 function equal( u, v )
 {
+    var i;
+
     if ( u.length != v.length ) { return false; }
 
     if ( u.matrix && v.matrix ) {
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) { return false; }
             for ( var j = 0; j < u[i].length; ++j ) {
                 if ( u[i][j] !== v[i][j] ) { return false; }
@@ -178,7 +180,7 @@ function equal( u, v )
         return false;
     }
     else {
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             if ( u[i] !== v[i] ) { return false; }
         }
     }

@@ -179,10 +179,9 @@ function equal( u, v )
     else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
         return false;
     }
-    else {
-        for ( i = 0; i < u.length; ++i ) {
-            if ( u[i] !== v[i] ) { return false; }
-        }
+
+    for ( i = 0; i < u.length; ++i ) {
+        if ( u[i] !== v[i] ) { return false; }
     }
 
     return true;
@@ -217,17 +216,16 @@ function add( u, v )
     else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
         throw "add(): trying to add matrix and non-matrix variables";
     }
-    else {
-        if ( u.length != v.length ) {
-            throw "add(): vectors are not the same dimension";
-        }
 
-        for ( i = 0; i < u.length; ++i ) {
-            result.push( u[i] + v[i] );
-        }
-
-        return result;
+    if ( u.length != v.length ) {
+        throw "add(): vectors are not the same dimension";
     }
+
+    for ( i = 0; i < u.length; ++i ) {
+        result.push( u[i] + v[i] );
+    }
+
+    return result;
 }
 
 //----------------------------------------------------------------------------
@@ -261,17 +259,16 @@ function subtract( u, v )
     else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
         throw "subtact(): trying to subtact  matrix and non-matrix variables";
     }
-    else {
-        if ( u.length != v.length ) {
-            throw "subtract(): vectors are not the same length";
-        }
 
-        for ( i = 0; i < u.length; ++i ) {
-            result.push( u[i] - v[i] );
-        }
-
-        return result;
+    if ( u.length != v.length ) {
+        throw "subtract(): vectors are not the same length";
     }
+
+    for ( i = 0; i < u.length; ++i ) {
+        result.push( u[i] - v[i] );
+    }
+
+    return result;
 }
 
 //----------------------------------------------------------------------------
@@ -308,17 +305,16 @@ function mult( u, v )
 
         return result;
     }
-    else {
-        if ( u.length != v.length ) {
-            throw "mult(): vectors are not the same dimension";
-        }
 
-        for ( i = 0; i < u.length; ++i ) {
-            result.push( u[i] * v[i] );
-        }
-
-        return result;
+    if ( u.length != v.length ) {
+        throw "mult(): vectors are not the same dimension";
     }
+
+    for ( i = 0; i < u.length; ++i ) {
+        result.push( u[i] * v[i] );
+    }
+
+    return result;
 }
 
 //----------------------------------------------------------------------------
@@ -936,10 +932,9 @@ function normalMatrix(m, flag)
     var a = mat4();
     a = inverse(transpose(m));
     if(flag != true) return a;
-    else {
+
     var b = mat3();
     for(var i=0;i<3;i++) for(var j=0; j<3; j++) b[i][j] = a[i][j];
     return b;
-    }
 
 }

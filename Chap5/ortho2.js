@@ -117,27 +117,27 @@ window.onload = function init() {
 
 // sliders for viewing parameters
 
-    document.getElementById("depthSlider").onchange = function() {
-        far = this.value/2;
-        near = -this.value/2;
+    document.getElementById("depthSlider").onchange = function(event) {
+        far = event.target.value/2;
+        near = -event.target.value/2;
     };
 
-    document.getElementById("radiusSlider").onchange = function() {
-       radius = this.value;
+    document.getElementById("radiusSlider").onchange = function(event) {
+       radius = event.target.value;
     };
-    document.getElementById("thetaSlider").onchange = function() {
-        theta = this.value* Math.PI/180.0;
+    document.getElementById("thetaSlider").onchange = function(event) {
+        theta = event.target.value* Math.PI/180.0;
     };
-    document.getElementById("phiSlider").onchange = function() {
-        phi = this.value* Math.PI/180.0;
+    document.getElementById("phiSlider").onchange = function(event) {
+        phi = event.target.value* Math.PI/180.0;
     };
-    document.getElementById("heightSlider").onchange = function() {
-        ytop = this.value/2;
-        bottom = -this.value/2;
+    document.getElementById("heightSlider").onchange = function(event) {
+        ytop = event.target.value/2;
+        bottom = -event.target.value/2;
     };
-    document.getElementById("widthSlider").onchange = function() {
-        right = this.value/2;
-        left = -this.value/2;
+    document.getElementById("widthSlider").onchange = function(event) {
+        right = event.target.value/2;
+        left = -event.target.value/2;
     };
 
     render();

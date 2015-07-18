@@ -86,7 +86,7 @@ window.onload = function init() {
           gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer);
           index += 4;
 
-          t = vec4(colors[cIndex]);
+          var t = vec4(colors[cIndex]);
 
           gl.bufferSubData(gl.ARRAY_BUFFER, 16*(index-4), flatten(t));
           gl.bufferSubData(gl.ARRAY_BUFFER, 16*(index-3), flatten(t));

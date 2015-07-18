@@ -8,11 +8,11 @@ varying vec4 fColor;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
-void main() 
+void main()
 {
     fColor = vColor;
     gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-} 
+}
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
@@ -21,10 +21,10 @@ precision mediump float;
 
 varying  vec4 fColor;
 
-void main() 
-{ 
+void main()
+{
     gl_FragColor = fColor;
-} 
+}
 </script>
 
 <script type="text/javascript" src="../Common/webgl-utils.js"></script>
@@ -32,22 +32,22 @@ void main()
 <script type="text/javascript" src="../Common/MV.js"></script>
 <script type="text/javascript" src="robotArm.js"></script>
 
-<div id="slider1">
-body angle -180 <input id="slide" type="range"
+<div>
+body angle -180 <input id="slider1" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
-<div id="slider2">
-lower arm angle -180 <input id="slide" type="range"
+<div>
+lower arm angle -180 <input id="slider2" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
-<div id="slider3">
-upper arm angle -180 <input id="slide" type="range"
+<div>
+upper arm angle -180 <input id="slider3" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180

@@ -243,7 +243,7 @@ function subtract( u, v )
 
         for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
-                throw "subtract(): trying to subtact matrices" +
+                throw "subtract(): trying to subtract matrices" +
                     " of different dimensions";
             }
             result.push( [] );
@@ -257,7 +257,7 @@ function subtract( u, v )
         return result;
     }
     else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
-        throw "subtact(): trying to subtact  matrix and non-matrix variables";
+        throw "subtact(): trying to subtact matrix and non-matrix variables";
     }
 
     if ( u.length != v.length ) {
@@ -280,12 +280,12 @@ function mult( u, v )
 
     if ( u.matrix && v.matrix ) {
         if ( u.length != v.length ) {
-            throw "mult(): trying to add matrices of different dimensions";
+            throw "mult(): trying to multiply matrices of different dimensions";
         }
 
         for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
-                throw "mult(): trying to add matrices of different dimensions";
+                throw "mult(): trying to multiply matrices of different dimensions";
             }
         }
 
@@ -392,15 +392,15 @@ function scalem( x, y, z )
 function lookAt( eye, at, up )
 {
     if ( !Array.isArray(eye) || eye.length != 3) {
-        throw "lookAt(): first parameter [eye] must be an a vec3";
+        throw "lookAt(): first parameter [eye] must be a vec3";
     }
 
     if ( !Array.isArray(at) || at.length != 3) {
-        throw "lookAt(): first parameter [at] must be an a vec3";
+        throw "lookAt(): second parameter [at] must be a vec3";
     }
 
     if ( !Array.isArray(up) || up.length != 3) {
-        throw "lookAt(): first parameter [up] must be an a vec3";
+        throw "lookAt(): third parameter [up] must be a vec3";
     }
 
     if ( equal(eye, at) ) {
@@ -527,11 +527,11 @@ function negate( u )
 function cross( u, v )
 {
     if ( !Array.isArray(u) || u.length < 3 ) {
-        throw "cross(): first argument is not a vector of at least 3";
+        throw "cross(): first argument is not a vector of dimension at least 3";
     }
 
     if ( !Array.isArray(v) || v.length < 3 ) {
-        throw "cross(): second argument is not a vector of at least 3";
+        throw "cross(): second argument is not a vector of dimension at least 3";
     }
 
     var result = [

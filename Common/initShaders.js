@@ -9,7 +9,7 @@ function initShaders( gl, vertexShaderId, fragmentShaderId )
     var msg;
 
     var vertElem = document.getElementById( vertexShaderId );
-    if ( !vertElem ) { 
+    if ( !vertElem ) {
         alert( "Unable to load vertex shader " + vertexShaderId );
         return -1;
     }
@@ -25,7 +25,7 @@ function initShaders( gl, vertexShaderId, fragmentShaderId )
     }
 
     var fragElem = document.getElementById( fragmentShaderId );
-    if ( !fragElem ) { 
+    if ( !fragElem ) {
         alert( "Unable to load vertex shader " + fragmentShaderId );
         return -1;
     }
@@ -44,7 +44,7 @@ function initShaders( gl, vertexShaderId, fragmentShaderId )
     gl.attachShader( program, vertShdr );
     gl.attachShader( program, fragShdr );
     gl.linkProgram( program );
-    
+
     if ( !gl.getProgramParameter(program, gl.LINK_STATUS) ) {
         msg = "Shader program failed to link.  The error log is:"
             + "<pre>" + gl.getProgramInfoLog( program ) + "</pre>";

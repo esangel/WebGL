@@ -191,13 +191,14 @@ function equal( u, v )
 function add( u, v )
 {
     var result = [];
+    var i;
 
     if ( u.matrix && v.matrix ) {
         if ( u.length != v.length ) {
             throw "add(): trying to add matrices of different dimensions";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
                 throw "add(): trying to add matrices of different dimensions";
             }
@@ -219,7 +220,7 @@ function add( u, v )
             throw "add(): vectors are not the same dimension";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             result.push( u[i] + v[i] );
         }
 
@@ -232,6 +233,7 @@ function add( u, v )
 function subtract( u, v )
 {
     var result = [];
+    var i;
 
     if ( u.matrix && v.matrix ) {
         if ( u.length != v.length ) {
@@ -239,7 +241,7 @@ function subtract( u, v )
                 " of different dimensions";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
                 throw "subtract(): trying to subtact matrices" +
                     " of different dimensions";
@@ -262,7 +264,7 @@ function subtract( u, v )
             throw "subtract(): vectors are not the same length";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             result.push( u[i] - v[i] );
         }
 
@@ -275,19 +277,20 @@ function subtract( u, v )
 function mult( u, v )
 {
     var result = [];
+    var i;
 
     if ( u.matrix && v.matrix ) {
         if ( u.length != v.length ) {
             throw "mult(): trying to add matrices of different dimensions";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
                 throw "mult(): trying to add matrices of different dimensions";
             }
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             result.push( [] );
 
             for ( var j = 0; j < v.length; ++j ) {
@@ -308,7 +311,7 @@ function mult( u, v )
             throw "mult(): vectors are not the same dimension";
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( i = 0; i < u.length; ++i ) {
             result.push( u[i] * v[i] );
         }
 
@@ -634,16 +637,18 @@ function flatten( v )
 
     var floats = new Float32Array( n );
 
+    var i;
+
     if ( elemsAreArrays ) {
         var idx = 0;
-        for ( var i = 0; i < v.length; ++i ) {
+        for ( i = 0; i < v.length; ++i ) {
             for ( var j = 0; j < v[i].length; ++j ) {
                 floats[idx++] = v[i][j];
             }
         }
     }
     else {
-        for ( var i = 0; i < v.length; ++i ) {
+        for ( i = 0; i < v.length; ++i ) {
             floats[i] = v[i];
         }
     }
@@ -668,14 +673,16 @@ var sizeof = {
 
 function printm(m)
 {
+    var i;
+
     if(m.length == 2)
-    for(var i=0; i<m.length; i++)
+    for(i=0; i<m.length; i++)
        console.log(m[i][0], m[i][1]);
     else if(m.length == 3)
-    for(var i=0; i<m.length; i++)
+    for(i=0; i<m.length; i++)
        console.log(m[i][0], m[i][1], m[i][2]);
     else if(m.length == 4)
-    for(var i=0; i<m.length; i++)
+    for(i=0; i<m.length; i++)
        console.log(m[i][0], m[i][1], m[i][2], m[i][3]);
 }
 // determinants

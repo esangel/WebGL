@@ -257,7 +257,7 @@ function subtract( u, v )
         return result;
     }
     else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
-        throw "subtact(): trying to subtact matrix and non-matrix variables";
+        throw "subtract(): trying to subtract matrix and non-matrix variables";
     }
 
     if ( u.length != v.length ) {
@@ -580,7 +580,7 @@ function normalize( u, excludeLastComponent )
 function mix( u, v, s )
 {
     if ( typeof s !== "number" ) {
-        throw "mix: the last paramter " + s + " must be a number";
+        throw "mix: the last parameter " + s + " must be a number";
     }
 
     if ( u.length != v.length ) {

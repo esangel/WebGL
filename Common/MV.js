@@ -364,6 +364,7 @@ function rotate( angle, axis )
 
     return result;
 }
+
 function rotateX(theta) {
   var c = Math.cos( radians(theta) );
   var s = Math.sin( radians(theta) );
@@ -385,12 +386,13 @@ function rotateY(theta) {
 function rotateZ(theta) {
   var c = Math.cos( radians(theta) );
   var s = Math.sin( radians(theta) );
-  var rz = mat4( c, -s, 0.0, 0.0,
-      s,  c, 0.0, 0.0,
+  var rz = mat4( c, s, 0.0, 0.0,
+      -s,  c, 0.0, 0.0,
       0.0,  0.0, 1.0, 0.0,
       0.0,  0.0, 0.0, 1.0 );
   return rz;
 }
+
 
 //----------------------------------------------------------------------------
 

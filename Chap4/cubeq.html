@@ -33,13 +33,14 @@ void main()
   vec4 rx, ry, rz;
   vec3 c =  cos(angles/2.0);
   vec3 s =  sin(angles/2.0);
-  rx = vec4(c.x, s.x, 0.0, 0.0); // x rotation quaternion
+  rx = vec4(c.x, -s.x, 0.0, 0.0); // x rotation quaternion
   ry = vec4(c.y, 0.0, s.y, 0.0); // y rotation quaternion
   rz = vec4(c.z, 0.0, 0.0, s.z); // z rotation quaternion
   r = multq(rx, multq(ry, rz)); // rotation quaternion
   p = vec4(0.0, vPosition.xyz);  // input point quaternion
   p = multq(r, multq(p, invq(r))); // rotated point quaternion
   gl_Position = vec4( p.yzw, 1.0); // convert back to homogeneous coordinates
+  gl_Position.z = -gl_Position.z;
   fColor = vColor;
 }
 </script>

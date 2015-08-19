@@ -29,13 +29,14 @@ void main()
 		    0.0, 0.0,  0.0, 1.0 );
 
 
-    mat4 rz = mat4( c.z, -s.z, 0.0, 0.0,
-		    s.z,  c.z, 0.0, 0.0,
+    mat4 rz = mat4( c.z, s.z, 0.0, 0.0,
+		    -s.z,  c.z, 0.0, 0.0,
 		    0.0,  0.0, 1.0, 0.0,
 		    0.0,  0.0, 0.0, 1.0 );
 
     fColor = vColor;
     gl_Position = rz * ry * rx * vPosition;
+    gl_Position.z = -gl_Position.z;
 }
 </script>
 

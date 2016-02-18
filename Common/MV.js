@@ -277,22 +277,23 @@ function mult( u, v )
     var result = [];
 
     if ( u.matrix && v.matrix ) {
-        if ( u.length != v.length ) {
-            throw "mult(): trying to add matrices of different dimensions";
-        }
-
-        for ( var i = 0; i < u.length; ++i ) {
-            if ( u[i].length != v[i].length ) {
-                throw "mult(): trying to add matrices of different dimensions";
+        var M = u.length;
+        var N = v.length;
+        var P = v[0].length;
+        
+        // Check that inner dimensions match.
+        for ( var i = 0; i < M; ++i ) {
+            if ( u[i].length != N ) {
+                throw "mult(): dimension mismatch";
             }
         }
 
-        for ( var i = 0; i < u.length; ++i ) {
+        for ( var i = 0; i < M; ++i ) {
             result.push( [] );
 
-            for ( var j = 0; j < v.length; ++j ) {
+            for ( var j = 0; j < P; ++j ) {
                 var sum = 0.0;
-                for ( var k = 0; k < u.length; ++k ) {
+                for ( var k = 0; k < N; ++k ) {
                     sum += u[i][k] * v[k][j];
                 }
                 result[i].push( sum );

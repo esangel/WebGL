@@ -505,11 +505,11 @@ function transpose( m )
     if ( !m.matrix ) {
         return "transpose(): trying to transpose a non-matrix";
     }
-
+    
     var result = [];
-    for ( var i = 0; i < m.length; ++i ) {
+    for ( var i = 0; i < m[0].length; ++i ) {
         result.push( [] );
-        for ( var j = 0; j < m[i].length; ++j ) {
+        for ( var j = 0; j < m.length; ++j ) {
             result[i].push( m[j][i] );
         }
     }

@@ -303,6 +303,20 @@ function mult( u, v )
 
         return result;
     }
+
+      if(u.matrix&& (u.length == v.length)) {
+        for(var i = 0; i<v.length; i++) {
+          var sum = 0.0;
+          for(var j=0; j<v.length; j++) {
+            sum += u[i][j]*v[j];
+          }
+          result.push(sum);
+        }
+      return result;
+      }
+
+
+
     else {
         if ( u.length != v.length ) {
             throw "mult(): vectors are not the same dimension";
